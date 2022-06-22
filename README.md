@@ -36,6 +36,11 @@ escalation
 ```
 looting
 ```
+* LOCAL ADMIN TO SYSTEM
+```
+. get_system
+```
+
 # HISTORY
 > If you are curious about how it works, read my blog:
 * [MEDIUM](https://karol-mazurek95.medium.com/)
