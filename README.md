@@ -34,7 +34,7 @@ escalation
 ```
 * LOOTING THE SYSTEM - USE AS nt `authority/system` ONLY!
 ```
-looting
+. looting
 ```
 * LOCAL ADMIN TO SYSTEM
 ```
