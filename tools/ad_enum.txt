@@ -1,0 +1,8 @@
+mkdir C:/blood/loot
+if($asme_1029384756) {
+    Invoke-Adpeas -Domain $domain_1029384756  | tee C:/blood/loot/"$domain_1029384756"_adpeas.txt
+    Invoke-BloodHound -Domain $domain_1029384756 -CollectionMethod All -outputdirectory C:/blood/loot/ 
+} else {
+    Invoke-Adpeas -Domain $domain_1029384756 -Username $user_1029384756 -Password $pass_1029384756 | tee C:/blood/loot/"$domain_1029384756"_adpeas.txt
+    Invoke-BloodHound -Domain $domain_1029384756 -LDAPUser $user_1029384756 -LDAPPass $pass_1029384756 -CollectionMethod All -outputdirectory C:/blood/loot/ 
+}

