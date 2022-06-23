@@ -73,6 +73,8 @@ Invoke-Wisp -Url http://<your_server>
 * [nmap](https://nmap.org/)
 * [Rubeus](https://github.com/GhostPack/Rubeus)
 * [laZagne](https://github.com/AlessandroZ/LaZagne)
+* [Inveigh](https://github.com/Kevin-Robertson/Inveigh)
+
 
 # LICENSE
 > This program is free software: you can redistribute it and/or modify it under the terms of the [Apache License](https://choosealicense.com/licenses/apache-2.0/). Crimson Lisp and any contributions are Copyright © by Karol Mazurek 2022.
