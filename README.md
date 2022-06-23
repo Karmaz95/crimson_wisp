@@ -44,7 +44,7 @@ Invoke-Wisp -Url http://<your_server>
 ```
 . ad_enumerator -domain domain.com -asme
 ```
-* AD ENUM - AS THE DIFF USER
+* AD ENUM - AS THE DIFFERENT USER
 ```
 . ad_enumerator -domain domain.com -user 'DOMAIN\karmaz95' -pass 'enumeration10!'
 ```

