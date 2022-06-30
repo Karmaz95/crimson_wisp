@@ -2647,7 +2647,7 @@ Start Enumerating using the domain 'contoso.com' and use the passed PSCredential
         [Parameter(Mandatory = $false)]
         [ValidateSet("DCOnly", "All")]
         [String]
-        $Scope = "DCOnly",
+        $Scope = "All",
 
         [Parameter(Mandatory = $false,HelpMessage='Enter a PSCredentials object like $Cred = New-Object System.Management.Automation.PSCredential("contoso\johndoe", $SecPassword)')]
         [ValidateNotNullOrEmpty()]
