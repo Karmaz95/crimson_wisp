@@ -14,6 +14,8 @@ try {Invoke-adPEAS | tee adpeas.txt}
 catch {$_}
 try {Invoke-BloodHound -CollectionMethod All,GPOLocalGroup -outputdirectory $pwd}
 catch {$_}
+try {type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt > history.txt}
+catch {$_}
 
 Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Blue "(https://github.com/bitsadmin/wesng)"
