@@ -33,6 +33,11 @@ Write-Host -ForegroundColor Yellow "Try escalate with meterpreter:"
 Write-Host -ForegroundColor DarkYellow "`tload priv`n`tgetsystem`n"
 
 Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
+Write-Host -ForegroundColor Yellow "Search source code for passwords"
+Write-Host -ForegroundColor DarkYellow "`tfindstr /sinp db_admin pwd password pass *.*`n"
+
+
+Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Yellow "ENUMERATE MSSQL:"
 Write-Host -ForegroundColor DarkYellow @"
 Get-SQLInstanceLocal -Verbose
