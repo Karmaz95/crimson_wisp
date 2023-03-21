@@ -11,6 +11,11 @@
 ```
 git clone https://github.com/Karmaz95/crimson_wisp.git
 ```
+### FIRST UPDATE THE TOOL
+```
+chmod +x update.sh
+./update.sh
+```
 # Usage
 ## ON THE HOST MACHINE
 * GO TO crimson_wisp DIRECTORY AND START THE WEB SERVER
